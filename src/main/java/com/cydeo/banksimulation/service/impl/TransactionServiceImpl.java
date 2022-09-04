@@ -85,7 +85,7 @@ public class TransactionServiceImpl implements TransactionService {
     private void checkAccountOwnerShip(Account sender, Account receiver) throws Exception {
         if ((sender.getAccountType().equals(AccountType.SAVINGS) || receiver.getAccountType().equals(AccountType.SAVINGS))
         && !sender.getUserId().equals(receiver.getUserId())) {
-            throw new AccountOwnerShipException("When one of the account type is SAVINGS, sender and receiver has tobe same person");
+            throw new AccountOwnerShipException("When one of the account type is SAVINGS, sender and receiver has to be same person");
         }
     }
 
