@@ -1,5 +1,6 @@
-package com.cydeo.banksimulation.entity;
+package com.cydeo.banksimulation.model;
 
+import com.cydeo.banksimulation.enums.AccountStatus;
 import com.cydeo.banksimulation.enums.AccountType;
 import lombok.Builder;
 import lombok.Data;
@@ -13,6 +14,7 @@ import java.util.UUID;
 public class Account {
     private UUID id;
     private BigDecimal balance;
+    private AccountStatus accountStatus;
     private AccountType accountType;
     private Date creationDate;
     private Long userId;
