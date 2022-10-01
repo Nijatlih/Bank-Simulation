@@ -1,16 +1,17 @@
 package com.cydeo.banksimulation.controller;
 
+import com.cydeo.banksimulation.model.Account;
 import com.cydeo.banksimulation.model.Transaction;
 import com.cydeo.banksimulation.service.AccountService;
 import com.cydeo.banksimulation.service.TransactionService;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.*;
+
+import java.util.Date;
+import java.util.UUID;
 
 @Controller
-@RequestMapping("/")
 public class TransactionController {
 
     private final AccountService accountService;
@@ -30,4 +31,24 @@ public class TransactionController {
         return "transaction/make-transfer";
     }
 
+    @PostMapping("/transfer")
+    public String makeTransfer(@ModelAttribute("transaction")Transaction transaction, Model model){
+
+        Account reciever = accountService.retriveById(transaction.getReceiver());
+        Account sender = accountService.retriveById(transaction.getSender());
+        try {
+            transactionService.makeTransfer(transaction.getAmount(),new Date(),sender,reciever,transaction.getMessage());
+        } catch (Exception e) {
+            throw new RuntimeException(e);
+        }
+        return "redirect:/make-transfer";
+
+    }
+    @GetMapping("/transaction/{id}")
+    public String transactionDetailById(@PathVariable("id") UUID id, Model model) {
+
+        model.addAttribute("transactionList", transactionService.findTransactionListById(id));
+
+        return "transaction/transactions";
+    }
 }
