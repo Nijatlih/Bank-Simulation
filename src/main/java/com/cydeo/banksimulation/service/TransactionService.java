@@ -14,4 +14,6 @@ public interface TransactionService {
                              String message) throws Exception;
 
     List<Transaction> findAll();
+
+    List<Transaction> retrieveLastTransaction();
 }
