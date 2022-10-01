@@ -32,10 +32,10 @@
                     <tbody>
                     <tr th:each="account : ${accountList}" >
                         <td th:text="${account.getUserId()}"></td>
-                        <td  th:text="${account.getAccountStatus()}"></td>
+                        <td th:text="${account.getAccountStatus()}"></td>
                         <td th:text="${account.getBalance()}"></td>
-                        <td  th:text="${account.getAccountType()}"></td>
-                        <td  th:text="${account.getCreationDate()}"></td>
+                        <td th:text="${account.getAccountType()}"></td>
+                        <td th:text="${account.getCreationDate()}"></td>
                         <td><a th:href="@{/delete/{id}(id=${account.id})}">Delete</a></td>
                         <td><a th:href="@{/transaction/{id}(id=${account.id})}">Account Transaction</a></td>
                     </tr>

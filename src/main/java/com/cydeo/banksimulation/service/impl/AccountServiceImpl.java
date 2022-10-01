@@ -1,5 +1,6 @@
 package com.cydeo.banksimulation.service.impl;
 
+import com.cydeo.banksimulation.enums.AccountStatus;
 import com.cydeo.banksimulation.model.Account;
 import com.cydeo.banksimulation.enums.AccountType;
 import com.cydeo.banksimulation.repository.AccountRepository;
@@ -33,7 +34,9 @@ public class AccountServiceImpl implements AccountService {
     }
 
     @Override
-    public void deleteAccount(UUID account) {
-        accountRepository.deleteAccount();
+    public void deleteAccount(UUID accountId) {
+        Account account = accountRepository.findById(accountId);
+        account.setAccountStatus(AccountStatus.DELETED);
+        accountRepository.deleteAccount(account);
     }
 }
