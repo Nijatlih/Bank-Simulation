@@ -39,7 +39,8 @@ public class TransactionServiceImpl implements TransactionService {
         validateAccounts(sender, receiver);
         executeBalanceAndUpdateIfRequired(amount, sender, receiver);
         return transactionRepository.save(Transaction.builder()
-                                    .amount(amount).creationDate(creationDate)
+                                    .amount(amount)
+                                    .creationDate(creationDate)
                                     .sender(sender.getId())
                                     .receiver(receiver.getId())
                                     .message(message)
@@ -77,8 +78,8 @@ public class TransactionServiceImpl implements TransactionService {
         findAccountById(receiver.getId());
     }
 
-    private Account findAccountById(UUID id) {
-        return accountRepository.findById(id);
+    private Account findAccountById(UUID accountId) {
+        return accountRepository.findById(accountId);
     }
 
     private void checkAccountOwnerShip(Account sender, Account receiver) throws Exception {
@@ -95,7 +96,7 @@ public class TransactionServiceImpl implements TransactionService {
 
     @Override
     public List<Transaction> retrieveLastTransaction() {
-        return transactionRepository.retriveLastTransaction();
+        return transactionRepository.retrieveLastTransactions();
     }
 
     @Override

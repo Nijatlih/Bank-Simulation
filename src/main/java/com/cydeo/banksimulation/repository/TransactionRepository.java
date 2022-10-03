@@ -23,7 +23,7 @@ public class TransactionRepository {
         return transactionList;
     }
 
-    public List<Transaction> retriveLastTransaction() {
+    public List<Transaction> retrieveLastTransactions() {
         return transactionList
                 .stream()
                 .sorted(Comparator.comparing(Transaction::getCreationDate))

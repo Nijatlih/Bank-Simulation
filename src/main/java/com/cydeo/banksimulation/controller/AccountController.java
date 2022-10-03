@@ -51,7 +51,7 @@ public class AccountController {
     }
 
     @GetMapping("/delete/{id}")
-    public String deleteUser(@PathVariable("id") UUID id, Model model){
+    public String deleteUser(@PathVariable("id") UUID id){
         accountService.deleteAccount(id);
         return "redirect:/index";
 
