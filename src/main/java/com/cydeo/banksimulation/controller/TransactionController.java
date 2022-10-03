@@ -32,7 +32,7 @@ public class TransactionController {
     }
 
     @PostMapping("/transfer")
-    public String makeTransfer(@ModelAttribute("transaction")Transaction transaction, Model model){
+    public String makeTransfer(@ModelAttribute("transaction")Transaction transaction){
 
         Account reciever = accountService.retriveById(transaction.getReceiver());
         Account sender = accountService.retriveById(transaction.getSender());

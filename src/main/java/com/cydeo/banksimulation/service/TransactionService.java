@@ -18,5 +18,5 @@ public interface TransactionService {
 
     List<Transaction> retrieveLastTransaction();
 
-    List<Transaction> findTransactionListById(UUID id);
+    List<Transaction> findTransactionListById(java.util.UUID id);
 }
