@@ -1,33 +1,11 @@
 package com.cydeo.banksimulation.repository;
 
-import org.springframework.stereotype.Component;
+import com.cydeo.banksimulation.entity.Account;
+import org.springframework.data.jpa.repository.JpaRepository;
+import org.springframework.stereotype.Repository;
 
-@Component
-public class AccountRepository {
+@Repository
+public interface AccountRepository extends JpaRepository<Account, Long> {
 
-//    public static List<Account> accountList = new ArrayList<>();
-//
-//    public Account save(Account account) {
-//        accountList.add(account);
-//        return account;
-//
-//    }
-//
-//    public List<Account> findAll() {
-//        return accountList;
-//    }
-//
-//    public Account findById(UUID accountId) {
-//        return accountList.stream().filter(account -> account.getId().equals(accountId)).findAny().orElseThrow(() ->
-//                new RecordNotFoundException("This account is not in the database"));
-//    }
-//
-//    public Account deleteAccount(Account account) {
-//
-//        accountList.remove(findById(account.getId()));
-//        accountList.add(account);
-//        return account;
-//
-//    }
 
 }

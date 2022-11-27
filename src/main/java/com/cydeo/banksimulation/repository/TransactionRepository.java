@@ -1,21 +1,12 @@
 package com.cydeo.banksimulation.repository;
 
-import org.springframework.stereotype.Component;
+import com.cydeo.banksimulation.entity.Transaction;
+import org.springframework.data.jpa.repository.JpaRepository;
+import org.springframework.stereotype.Repository;
 
-@Component
-public class TransactionRepository {
+@Repository
+public interface TransactionRepository extends JpaRepository<Transaction, Long> {
 
-//    public List<Transaction> transactionList = new ArrayList<>();
-//
-//    public Transaction save(Transaction transaction){
-//        transactionList.add(transaction);
-//        return transaction;
-//    }
-//
-//    public List<Transaction> findAll() {
-//        return transactionList;
-//    }
-//
 //    public List<Transaction> retrieveLastTransactions() {
 //        return transactionList
 //                .stream()
