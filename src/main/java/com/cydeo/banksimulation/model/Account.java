@@ -1,37 +1,31 @@
-package com.cydeo.banksimulation.dto;
+package com.cydeo.banksimulation.model;
 
 import com.cydeo.banksimulation.enums.AccountStatus;
 import com.cydeo.banksimulation.enums.AccountType;
-import lombok.AllArgsConstructor;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
-import lombok.Setter;
+import lombok.Builder;
+import lombok.Data;
 
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Positive;
 import java.math.BigDecimal;
 import java.util.Date;
+import java.util.UUID;
 
-@Getter
-@Setter
-@AllArgsConstructor
-@NoArgsConstructor
-public class AccountDTO {
+@Data
+@Builder
+public class Account {
 
-    private Long id;
-
-    @NotNull
-    private AccountType accountType;
-
-    private AccountStatus accountStatus;
-
-    private Date creationDate;
-
-    @NotNull
-    private Long userId;
+    private UUID id;
 
     @NotNull
     @Positive
     private BigDecimal balance;
+    private AccountStatus accountStatus;
+    @NotNull
+    private AccountType accountType;
+
+    private Date creationDate;
+    @NotNull
+    private Long userId;
 
 }
