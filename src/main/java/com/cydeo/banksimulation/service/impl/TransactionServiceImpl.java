@@ -23,9 +23,9 @@ public class TransactionServiceImpl implements TransactionService {
 
     @Value("${under_construction}")
     private boolean underConstruction;
+
     AccountRepository accountRepository;
     TransactionRepository transactionRepository;
-
 
     public TransactionServiceImpl(AccountRepository accountRepository, TransactionRepository transactionRepository) {
         this.accountRepository = accountRepository;
@@ -33,28 +33,26 @@ public class TransactionServiceImpl implements TransactionService {
     }
 
     @Override
-    public Transaction makeTransfer(BigDecimal amount, Date creationDate, Account sender, Account receiver, String message) throws Exception {
+    public Transaction makeTransfer(BigDecimal amount, Date creationDate, Account sender, Account receiver, String message) {
         if(!underConstruction){
         checkAccountOwnerShip(sender, receiver);
         validateAccounts(sender, receiver);
         executeBalanceAndUpdateIfRequired(amount, sender, receiver);
-        return transactionRepository.save(Transaction.builder()
-                                    .amount(amount)
-                                    .creationDate(creationDate)
-                                    .sender(sender.getId())
-                                    .receiver(receiver.getId())
-                                    .message(message)
-                                    .build());
+        return transactionRepository.save(Transaction.builder().
+                                            amount(amount).
+                                            creationDate(creationDate).
+                                            sender(sender.getId()).
+                                            receiver(receiver.getId()).
+                                            message(message).build()) ;
         }
         else {
             throw new UnderConstructionException("Make transfer is not possible for now. Please try again later");
         }
 
-
     }
 
     private void executeBalanceAndUpdateIfRequired(BigDecimal amount, Account sender, Account receiver) {
-        if (checkSenderBalance(sender, amount)) {
+        if(checkSenderBalance(sender, amount)){
             sender.setBalance(sender.getBalance().subtract(amount));
             receiver.setBalance(receiver.getBalance().add(amount));
         } else {
@@ -64,14 +62,15 @@ public class TransactionServiceImpl implements TransactionService {
 
     private boolean checkSenderBalance(Account sender, BigDecimal amount) {
         return sender.getBalance().subtract(amount).compareTo(BigDecimal.ZERO) > 0;
+
     }
 
     private void validateAccounts(Account sender, Account receiver) {
-        if (sender == null || receiver == null) {
+        if(sender == null || receiver == null){
             throw new BadRequestException("Sender or receiver can not be null");
         }
-        if (sender.getId().equals(receiver.getId())) {
-            throw new BadRequestException("Sender account needs to be different from receiver account");
+        if(sender.getId().equals(receiver.getId())){
+            throw new BadRequestException("Sender account needs to be different from recaiver account");
         }
 
         findAccountById(sender.getId());
@@ -82,10 +81,10 @@ public class TransactionServiceImpl implements TransactionService {
         return accountRepository.findById(accountId);
     }
 
-    private void checkAccountOwnerShip(Account sender, Account receiver) throws Exception {
-        if ((sender.getAccountType().equals(AccountType.SAVINGS) || receiver.getAccountType().equals(AccountType.SAVINGS))
-        && !sender.getUserId().equals(receiver.getUserId())) {
-            throw new AccountOwnerShipException("When one of the account type is SAVINGS, sender and receiver has to be same person");
+    private void checkAccountOwnerShip(Account sender, Account receiver) {
+        if((sender.getAccountType().equals(AccountType.SAVINGS) || receiver.getAccountType().equals(AccountType.SAVINGS))
+        && !sender.getUserId().equals(receiver.getUserId())){
+            throw new AccountOwnerShipException("When one of the account type is SAVINGS, sender and receiver has tobe same person");
         }
     }
 
