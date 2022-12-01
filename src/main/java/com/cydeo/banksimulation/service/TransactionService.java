@@ -13,7 +13,7 @@ public interface TransactionService {
 
     List<TransactionDTO> findAll();
 
-    List<TransactionDTO> retrieveLastTransaction();
+    List<TransactionDTO> retrieveLastTransactions();
 
     List<TransactionDTO> findTransactionListByAccountId(Long id);
 }
