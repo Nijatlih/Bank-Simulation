@@ -12,7 +12,7 @@ public interface AccountService {
 
     List<AccountDTO> listAllActiveAccount();
 
-    void deleteAccount(Long accountId);
+    void deleteAccount(Long account);
 
     AccountDTO retrieveById(Long account);
 }
