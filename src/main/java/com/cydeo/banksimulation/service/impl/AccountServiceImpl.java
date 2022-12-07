@@ -12,7 +12,6 @@ import java.util.Date;
 import java.util.List;
 import java.util.stream.Collectors;
 
-
 @Service
 public class AccountServiceImpl implements AccountService {
 
@@ -51,11 +50,15 @@ public class AccountServiceImpl implements AccountService {
 
     @Override
     public AccountDTO retrieveById(Long account) {
-        return null;
+
+        return accountMapper.convertToDto(accountRepository.getById(account));
     }
 
     @Override
     public List<AccountDTO> listAllActiveAccount() {
-        return null;
+
+        List<Account> accountList = accountRepository.findAllByAccountStatus(AccountStatus.ACTIVE);
+        return accountList.stream().map(accountMapper::convertToDto).collect(Collectors.toList());
     }
+
 }
