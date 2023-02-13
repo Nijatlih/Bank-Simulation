@@ -29,6 +29,7 @@ public class AccountController {
     public String getCreateForm(Model model) {
         model.addAttribute("accountDTO", new AccountDTO());
         model.addAttribute("accountTypes", AccountType.values());
+        //model.addAttribute("accountList", accountService.listAllAccount());
         return "account/create-account";
 
     }
