@@ -36,4 +36,8 @@ public class Account {
 
     private BigDecimal balance;
 
+    private String phoneNumber;
+    private Boolean otpVerified;
+
+
 }

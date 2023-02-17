@@ -34,4 +34,8 @@ public class AccountDTO {
     @Positive
     private BigDecimal balance;
 
+    private Boolean otpVerified;
+    private String phoneNumber;
+
+
 }
