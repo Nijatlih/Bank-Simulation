@@ -5,10 +5,7 @@ import com.cydeo.banksimulation.dto.TransactionDTO;
 import com.cydeo.banksimulation.entity.Transaction;
 import com.cydeo.banksimulation.enums.AccountStatus;
 import com.cydeo.banksimulation.enums.AccountType;
-import com.cydeo.banksimulation.exception.AccountOwnerShipException;
-import com.cydeo.banksimulation.exception.BadRequestException;
-import com.cydeo.banksimulation.exception.BalanceNotSufficientException;
-import com.cydeo.banksimulation.exception.UnderConstructionException;
+import com.cydeo.banksimulation.exception.*;
 import com.cydeo.banksimulation.mapper.TransactionMapper;
 import com.cydeo.banksimulation.repository.TransactionRepository;
 import com.cydeo.banksimulation.service.AccountService;
@@ -42,8 +39,10 @@ public class TransactionServiceImpl implements TransactionService {
     public TransactionDTO makeTransfer(BigDecimal amount, Date creationDate, AccountDTO sender, AccountDTO receiver, String message) {
         if (!underConstruction) {
 
-            checkAccountOwnerShip(sender, receiver);
             validateAccounts(sender, receiver);
+
+            checkAccountOwnerShip(sender, receiver);
+
             executeBalanceAndUpdateIfRequired(amount, sender, receiver);
 
             TransactionDTO transactionDTO = new TransactionDTO(sender, receiver, amount, message, creationDate);
@@ -55,8 +54,13 @@ public class TransactionServiceImpl implements TransactionService {
         } else {
             throw new UnderConstructionException("Make transfer is not possible for now. Please try again later");
         }
-
     }
+        public void checkAccountVerification(AccountDTO sender){
+            if (!sender.getOtpVerified()){
+                throw new AccountNotVerifiedException("account not verified yet.");
+            }
+
+        }
 
     private void executeBalanceAndUpdateIfRequired(BigDecimal amount, AccountDTO sender, AccountDTO receiver) {
 
@@ -103,18 +107,18 @@ public class TransactionServiceImpl implements TransactionService {
             throw new BadRequestException("Receiver account is deleted, you can not send money to this account");
         }
 
-        findAccountById(sender.getId());
-        findAccountById(receiver.getId());
+        AccountDTO senderAccount = accountService.retrieveById(sender.getId());
+        AccountDTO receiverAccount = accountService.retrieveById(receiver.getId());
+        checkAccountVerification(senderAccount);
+        checkAccountVerification(receiverAccount);
 
-    }
-
-    private AccountDTO findAccountById(Long accountId) {
-        return accountService.retrieveById(accountId);
     }
 
     private void checkAccountOwnerShip(AccountDTO sender, AccountDTO receiver) {
 
-        if ((sender.getAccountType().equals(AccountType.SAVINGS) || receiver.getAccountType().equals(AccountType.SAVINGS)) && !sender.getUserId().equals(receiver.getUserId())) {
+        if ((sender.getAccountType().equals(AccountType.SAVINGS) ||
+                receiver.getAccountType().equals(AccountType.SAVINGS))
+                && !sender.getUserId().equals(receiver.getUserId())) {
             throw new AccountOwnerShipException("When one of the account type is SAVINGS, sender and receiver has tobe same person");
         }
 
